@@ -1,0 +1,942 @@
+{
+  "$schema": "https://tr.designtokens.org/format/",
+  "meta": {
+    "project": "光影Play (Prism Play) · 商业版",
+    "legacyAlias": "光影短剧 / Guangying Short Drama（旧品牌名，已废弃，仅历史文档可追溯）",
+    "version": "2.0.0",
+    "register": "Product",
+    "sourceOfTruth": "src/styles/design-tokens.css",
+    "syncRule": "本文件为 CSS 的机读镜像；色值、断点、动效必须与 design-tokens.css 同源，任一侧变更须同步另一侧。",
+    "iconSystem": {
+      "library": "Lucide Icons (Inline SVG Sprite / 2px Stroke)",
+      "viewBox": "0 0 24 24",
+      "strokeWidth": "2",
+      "strokeLinecap": "round",
+      "strokeLinejoin": "round",
+      "sizes": {
+        "inline": "16px",
+        "button": "20px",
+        "standalone": "24px"
+      },
+      "emojiForbidden": true
+    },
+    "designDial": {
+      "DESIGN_VARIANCE": 5,
+      "MOTION_INTENSITY": 4,
+      "VISUAL_DENSITY": 6
+    },
+    "contrastPolicy": {
+      "bodyText": "≥ 4.5:1",
+      "uiComponent": "≥ 3:1",
+      "accentOnLightTheme": "浅色 --accent 背景上的前景取 --accent-on: #131720（深色字），禁止白字",
+      "metaUsage": "--meta 仅用于角标/版本等辅助信息，不得承载正文段落"
+    },
+    "easingsForbidden": [
+      "bounce",
+      "elastic",
+      "back"
+    ]
+  },
+  "breakpoints": {
+    "tablet": {
+      "value": "768px",
+      "type": "dimension",
+      "description": "平板/折叠屏断点，与 CSS @media (min-width: 768px) 一致"
+    },
+    "desktop": {
+      "value": "1024px",
+      "type": "dimension",
+      "description": "桌面/电视断点，与 CSS @media (min-width: 1024px) 一致"
+    }
+  },
+  "themes": {
+    "dark": {
+      "name": "黑曜石夜空 (Obsidian Night)",
+      "isDefault": true,
+      "color": {
+        "bg": {
+          "value": "#080A10",
+          "type": "color",
+          "tier": "A1-identity",
+          "description": "OLED深度省电暗黑主背景"
+        },
+        "surface": {
+          "value": "#12151F",
+          "type": "color",
+          "tier": "A1-identity",
+          "description": "一级表面卡片与导航底"
+        },
+        "surface-raised": {
+          "value": "#1A1F2C",
+          "type": "color",
+          "tier": "A1-identity",
+          "description": "二级悬浮抽屉与弹窗底"
+        },
+        "surface-overlay": {
+          "value": "rgba(8, 10, 16, 0.82)",
+          "type": "color",
+          "tier": "B-slot",
+          "description": "吸顶与控制台半透明底"
+        },
+        "surface-warm": {
+          "value": "#181C28",
+          "type": "color",
+          "tier": "B-slot",
+          "description": "选中态胶囊与列表高亮"
+        },
+        "surface-subtle": {
+          "value": "#0E1119",
+          "type": "color",
+          "tier": "B-slot",
+          "description": "背景底槽"
+        },
+        "fg": {
+          "value": "#F4F6FB",
+          "type": "color",
+          "tier": "A1-identity",
+          "description": "高对比冷白主字色"
+        },
+        "fg-2": {
+          "value": "#C5CBD8",
+          "type": "color",
+          "tier": "B-slot",
+          "description": "次级文本色"
+        },
+        "muted": {
+          "value": "#7E8698",
+          "type": "color",
+          "tier": "A1-identity",
+          "description": "弱化说明文本色"
+        },
+        "meta": {
+          "value": "#929AAA",
+          "type": "color",
+          "tier": "B-slot",
+          "description": "四级微注与角标字色；在 surface 上需实测对比度"
+        },
+        "border": {
+          "value": "#222736",
+          "type": "color",
+          "tier": "A1-identity",
+          "description": "标准卡片与分隔边框"
+        },
+        "border-subtle": {
+          "value": "#181D29",
+          "type": "color",
+          "tier": "B-slot",
+          "description": "极弱内分割线"
+        },
+        "border-strong": {
+          "value": "#343B4E",
+          "type": "color",
+          "tier": "B-slot",
+          "description": "激活与聚焦边框"
+        },
+        "accent": {
+          "value": "#E5A93C",
+          "type": "color",
+          "tier": "A1-identity",
+          "description": "流媒体院线琥珀金主强调色"
+        },
+        "accent-hover": {
+          "value": "#F0B854",
+          "type": "color",
+          "tier": "A2",
+          "description": "强调色悬停态"
+        },
+        "accent-active": {
+          "value": "#C88E26",
+          "type": "color",
+          "tier": "A2",
+          "description": "强调色按下态"
+        },
+        "accent-on": {
+          "value": "#080A10",
+          "type": "color",
+          "tier": "A2",
+          "description": "强调色背景上的前景色"
+        },
+        "accent-subtle": {
+          "value": "rgba(229, 169, 60, 0.12)",
+          "type": "color",
+          "tier": "C-extension",
+          "description": "强调色微光底色"
+        },
+        "success": {
+          "value": "#22C55E",
+          "type": "color",
+          "tier": "A2"
+        },
+        "success-subtle": {
+          "value": "rgba(34, 197, 94, 0.14)",
+          "type": "color",
+          "tier": "C-extension"
+        },
+        "warn": {
+          "value": "#F59E0B",
+          "type": "color",
+          "tier": "A2"
+        },
+        "warn-subtle": {
+          "value": "rgba(245, 158, 11, 0.14)",
+          "type": "color",
+          "tier": "C-extension"
+        },
+        "danger": {
+          "value": "#EF4444",
+          "type": "color",
+          "tier": "A2"
+        },
+        "danger-subtle": {
+          "value": "rgba(239, 68, 68, 0.14)",
+          "type": "color",
+          "tier": "C-extension"
+        },
+        "info": {
+          "value": "#38BDF8",
+          "type": "color",
+          "tier": "A2"
+        },
+        "info-subtle": {
+          "value": "rgba(56, 189, 248, 0.14)",
+          "type": "color",
+          "tier": "C-extension"
+        },
+        "player-bg": {
+          "value": "#000000",
+          "type": "color",
+          "tier": "C-extension",
+          "description": "播放器视频底层全黑"
+        },
+        "player-hud-bg": {
+          "value": "rgba(8, 10, 16, 0.72)",
+          "type": "color",
+          "tier": "C-extension"
+        },
+        "player-hud-border": {
+          "value": "rgba(255, 255, 255, 0.08)",
+          "type": "color",
+          "tier": "C-extension"
+        },
+        "player-vol-accent": {
+          "value": "#38BDF8",
+          "type": "color",
+          "tier": "C-extension",
+          "description": "左滑音量弧形条色彩"
+        },
+        "player-bri-accent": {
+          "value": "#FBBF24",
+          "type": "color",
+          "tier": "C-extension",
+          "description": "右滑亮度阳光条色彩"
+        },
+        "player-accent": {
+          "value": "#E5A93C",
+          "type": "color",
+          "tier": "C-extension",
+          "description": "播放器深底琥珀金"
+        },
+        "player-track-bg": {
+          "value": "rgba(255, 255, 255, 0.20)",
+          "type": "color",
+          "tier": "C-extension"
+        },
+        "player-buffered": {
+          "value": "rgba(255, 255, 255, 0.45)",
+          "type": "color",
+          "tier": "C-extension"
+        },
+        "player-played": {
+          "value": "{player-accent}",
+          "type": "color",
+          "tier": "C-extension",
+          "description": "已播进度条"
+        },
+        "player-chrome-scrim": {
+          "value": "linear-gradient(to bottom, rgba(8, 10, 16, 0.68) 0%, rgba(8, 10, 16, 0) 100%)",
+          "type": "paint",
+          "tier": "C-extension",
+          "description": "HP-08 全屏控制层顶部渐隐遮罩：替掉旧的横贯实心带与下边框。定义在通用 :root 段（与 --badge-* 同理），播放器内部恒为全黑沉浸，故深浅双模同值、结构上不可能漂移"
+        },
+        "badge-ai": {
+          "value": "#38BDF8",
+          "type": "color",
+          "tier": "C-extension",
+          "description": "海报角标·Ai剧（HP-10：类型事实，不是质量评价；旧的质量化文案已撤）：科技冰蓝。角标底板恒为深色，故深浅双模取同值；复用播放器音量水滴蓝，避免新增色值"
+        },
+        "badge-hot": {
+          "value": "#E5A93C",
+          "type": "color",
+          "tier": "C-extension",
+          "description": "海报角标·热门：院线琥珀金。同 --player-accent，深浅双模同值（深底场景不可随主题加深）"
+        },
+        "badge-recommend": {
+          "value": "#FFFFFF",
+          "type": "color",
+          "tier": "C-extension",
+          "description": "海报角标·推荐：象牙纯白。深浅双模同值，压在深色角标底板上对比度充足"
+        },
+        "badge-bg": {
+          "value": "rgba(8, 10, 16, 0.75)",
+          "type": "color",
+          "tier": "C-extension",
+          "description": "海报角标底板：高斯磨砂深底，恒定深色，故不随主题切换"
+        }
+      },
+      "elevation": {
+        "flat": {
+          "value": "none",
+          "type": "boxShadow"
+        },
+        "ring": {
+          "value": "0 0 0 1px {border}",
+          "type": "boxShadow"
+        },
+        "card": {
+          "value": "0 4px 16px rgba(0, 0, 0, 0.35)",
+          "type": "boxShadow"
+        },
+        "float": {
+          "value": "0 12px 32px rgba(0, 0, 0, 0.55)",
+          "type": "boxShadow"
+        },
+        "hud": {
+          "value": "0 8px 24px rgba(0, 0, 0, 0.65)",
+          "type": "boxShadow"
+        }
+      }
+    },
+    "light": {
+      "name": "象牙纯白 (Ivory White)",
+      "isDefault": false,
+      "color": {
+        "bg": {
+          "value": "#F5F6FA",
+          "type": "color",
+          "tier": "A1-identity",
+          "description": "户外强光护眼浅灰白背景"
+        },
+        "surface": {
+          "value": "#FFFFFF",
+          "type": "color",
+          "tier": "A1-identity",
+          "description": "纯白卡片与导航底"
+        },
+        "surface-raised": {
+          "value": "#FFFFFF",
+          "type": "color",
+          "tier": "A1-identity",
+          "description": "浮层与弹窗底"
+        },
+        "surface-overlay": {
+          "value": "rgba(245, 246, 250, 0.88)",
+          "type": "color",
+          "tier": "B-slot",
+          "description": "浅色半透明吸顶遮罩"
+        },
+        "surface-warm": {
+          "value": "#EBEDF4",
+          "type": "color",
+          "tier": "B-slot",
+          "description": "选中态与输入槽底"
+        },
+        "surface-subtle": {
+          "value": "#E2E5EE",
+          "type": "color",
+          "tier": "B-slot",
+          "description": "极淡线槽"
+        },
+        "fg": {
+          "value": "#131720",
+          "type": "color",
+          "tier": "A1-identity",
+          "description": "深墨晶黑主文本"
+        },
+        "fg-2": {
+          "value": "#3E4656",
+          "type": "color",
+          "tier": "B-slot",
+          "description": "次级文本"
+        },
+        "muted": {
+          "value": "#6C7486",
+          "type": "color",
+          "tier": "A1-identity",
+          "description": "弱化说明文本"
+        },
+        "meta": {
+          "value": "#626B7B",
+          "type": "color",
+          "tier": "B-slot",
+          "description": "辅助微注字色；在 surface 上需实测对比度"
+        },
+        "border": {
+          "value": "#DFE2EA",
+          "type": "color",
+          "tier": "A1-identity",
+          "description": "浅色标准分割边框"
+        },
+        "border-subtle": {
+          "value": "#EBEEF5",
+          "type": "color",
+          "tier": "B-slot",
+          "description": "柔和内行分割线"
+        },
+        "border-strong": {
+          "value": "#BAC0CE",
+          "type": "color",
+          "tier": "B-slot",
+          "description": "强调与激活描边"
+        },
+        "accent": {
+          "value": "#B87B14",
+          "type": "color",
+          "tier": "A1-identity",
+          "description": "浅色高对比沉淀琥珀金"
+        },
+        "accent-hover": {
+          "value": "#9E670E",
+          "type": "color",
+          "tier": "A2"
+        },
+        "accent-active": {
+          "value": "#7E5107",
+          "type": "color",
+          "tier": "A2"
+        },
+        "accent-on": {
+          "value": "#131720",
+          "type": "color",
+          "tier": "A2",
+          "description": "浅色强调色背景上的前景：深色字，禁止白字"
+        },
+        "accent-subtle": {
+          "value": "rgba(184, 123, 20, 0.10)",
+          "type": "color",
+          "tier": "C-extension"
+        },
+        "success": {
+          "value": "#15803D",
+          "type": "color",
+          "tier": "A2"
+        },
+        "success-subtle": {
+          "value": "rgba(21, 128, 61, 0.12)",
+          "type": "color",
+          "tier": "C-extension"
+        },
+        "warn": {
+          "value": "#B45309",
+          "type": "color",
+          "tier": "A2"
+        },
+        "warn-subtle": {
+          "value": "rgba(180, 83, 9, 0.12)",
+          "type": "color",
+          "tier": "C-extension"
+        },
+        "danger": {
+          "value": "#B91C1C",
+          "type": "color",
+          "tier": "A2"
+        },
+        "danger-subtle": {
+          "value": "rgba(185, 28, 28, 0.12)",
+          "type": "color",
+          "tier": "C-extension"
+        },
+        "info": {
+          "value": "#0284C7",
+          "type": "color",
+          "tier": "A2"
+        },
+        "info-subtle": {
+          "value": "rgba(2, 132, 199, 0.12)",
+          "type": "color",
+          "tier": "C-extension"
+        },
+        "player-bg": {
+          "value": "#000000",
+          "type": "color",
+          "tier": "C-extension",
+          "description": "浅色宿主内播放器仍全黑沉浸"
+        },
+        "player-hud-bg": {
+          "value": "rgba(19, 23, 32, 0.85)",
+          "type": "color",
+          "tier": "C-extension"
+        },
+        "player-hud-border": {
+          "value": "rgba(255, 255, 255, 0.12)",
+          "type": "color",
+          "tier": "C-extension"
+        },
+        "player-vol-accent": {
+          "value": "#38BDF8",
+          "type": "color",
+          "tier": "C-extension"
+        },
+        "player-bri-accent": {
+          "value": "#FBBF24",
+          "type": "color",
+          "tier": "C-extension"
+        },
+        "player-accent": {
+          "value": "#E5A93C",
+          "type": "color",
+          "tier": "C-extension"
+        },
+        "player-track-bg": {
+          "value": "rgba(255, 255, 255, 0.25)",
+          "type": "color",
+          "tier": "C-extension"
+        },
+        "player-buffered": {
+          "value": "rgba(255, 255, 255, 0.50)",
+          "type": "color",
+          "tier": "C-extension"
+        },
+        "player-played": {
+          "value": "{player-accent}",
+          "type": "color",
+          "tier": "C-extension"
+        },
+        "player-chrome-scrim": {
+          "value": "linear-gradient(to bottom, rgba(8, 10, 16, 0.68) 0%, rgba(8, 10, 16, 0) 100%)",
+          "type": "paint",
+          "tier": "C-extension",
+          "description": "HP-08 全屏控制层顶部渐隐遮罩：替掉旧的横贯实心带与下边框。定义在通用 :root 段（与 --badge-* 同理），播放器内部恒为全黑沉浸，故深浅双模同值、结构上不可能漂移"
+        },
+        "badge-ai": {
+          "value": "#38BDF8",
+          "type": "color",
+          "tier": "C-extension",
+          "description": "海报角标·Ai剧（HP-10：类型事实，不是质量评价；旧的质量化文案已撤）：科技冰蓝。角标底板恒为深色，故深浅双模取同值；复用播放器音量水滴蓝，避免新增色值"
+        },
+        "badge-hot": {
+          "value": "#E5A93C",
+          "type": "color",
+          "tier": "C-extension",
+          "description": "海报角标·热门：院线琥珀金。同 --player-accent，深浅双模同值（深底场景不可随主题加深）"
+        },
+        "badge-recommend": {
+          "value": "#FFFFFF",
+          "type": "color",
+          "tier": "C-extension",
+          "description": "海报角标·推荐：象牙纯白。深浅双模同值，压在深色角标底板上对比度充足"
+        },
+        "badge-bg": {
+          "value": "rgba(8, 10, 16, 0.75)",
+          "type": "color",
+          "tier": "C-extension",
+          "description": "海报角标底板：高斯磨砂深底，恒定深色，故不随主题切换"
+        }
+      },
+      "elevation": {
+        "flat": {
+          "value": "none",
+          "type": "boxShadow"
+        },
+        "ring": {
+          "value": "0 0 0 1px {border}",
+          "type": "boxShadow"
+        },
+        "card": {
+          "value": "0 2px 8px rgba(19, 23, 32, 0.05), 0 8px 24px rgba(19, 23, 32, 0.04)",
+          "type": "boxShadow"
+        },
+        "float": {
+          "value": "0 8px 30px rgba(19, 23, 32, 0.12)",
+          "type": "boxShadow"
+        },
+        "hud": {
+          "value": "0 6px 20px rgba(0, 0, 0, 0.35)",
+          "type": "boxShadow"
+        }
+      }
+    }
+  },
+  "typography": {
+    "fontFamily": {
+      "display": {
+        "value": "-apple-system, BlinkMacSystemFont, 'SF Pro Display', 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', sans-serif",
+        "type": "fontFamily"
+      },
+      "body": {
+        "value": "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', sans-serif",
+        "type": "fontFamily"
+      },
+      "mono": {
+        "value": "'SF Mono', 'JetBrains Mono', Consolas, 'Liberation Mono', Menlo, monospace",
+        "type": "fontFamily"
+      }
+    },
+    "fontSize": {
+      "2xs": {
+        "value": "10px",
+        "type": "dimension"
+      },
+      "xs": {
+        "value": "12px",
+        "type": "dimension"
+      },
+      "sm": {
+        "value": "13px",
+        "type": "dimension"
+      },
+      "base": {
+        "value": "15px",
+        "type": "dimension"
+      },
+      "md": {
+        "value": "17px",
+        "type": "dimension"
+      },
+      "lg": {
+        "value": "20px",
+        "type": "dimension"
+      },
+      "xl": {
+        "value": "24px",
+        "type": "dimension"
+      },
+      "display": {
+        "value": "32px",
+        "type": "dimension"
+      }
+    },
+    "leading": {
+      "none": {
+        "value": "1.0",
+        "type": "number"
+      },
+      "tight": {
+        "value": "1.25",
+        "type": "number"
+      },
+      "snug": {
+        "value": "1.375",
+        "type": "number"
+      },
+      "normal": {
+        "value": "1.5",
+        "type": "number"
+      }
+    },
+    "tracking": {
+      "tight": {
+        "value": "-0.015em",
+        "type": "dimension",
+        "description": "标题微缩字距"
+      },
+      "normal": {
+        "value": "0em",
+        "type": "dimension"
+      },
+      "caps": {
+        "value": "0.06em",
+        "type": "dimension",
+        "description": "全大写英文/技术参数字距"
+      }
+    }
+  },
+  "spacing": {
+    "1": {
+      "value": "4px",
+      "type": "dimension"
+    },
+    "2": {
+      "value": "8px",
+      "type": "dimension"
+    },
+    "3": {
+      "value": "12px",
+      "type": "dimension"
+    },
+    "4": {
+      "value": "16px",
+      "type": "dimension"
+    },
+    "5": {
+      "value": "20px",
+      "type": "dimension"
+    },
+    "6": {
+      "value": "24px",
+      "type": "dimension"
+    },
+    "8": {
+      "value": "32px",
+      "type": "dimension"
+    },
+    "10": {
+      "value": "40px",
+      "type": "dimension"
+    },
+    "12": {
+      "value": "48px",
+      "type": "dimension"
+    },
+    "16": {
+      "value": "64px",
+      "type": "dimension"
+    }
+  },
+  "radius": {
+    "xs": {
+      "value": "4px",
+      "type": "dimension"
+    },
+    "sm": {
+      "value": "6px",
+      "type": "dimension"
+    },
+    "md": {
+      "value": "10px",
+      "type": "dimension"
+    },
+    "lg": {
+      "value": "14px",
+      "type": "dimension"
+    },
+    "pill": {
+      "value": "9999px",
+      "type": "dimension"
+    }
+  },
+  "motion": {
+    "duration": {
+      "instant": {
+        "value": "80ms",
+        "type": "duration"
+      },
+      "fast": {
+        "value": "150ms",
+        "type": "duration"
+      },
+      "normal": {
+        "value": "240ms",
+        "type": "duration"
+      },
+      "slow": {
+        "value": "360ms",
+        "type": "duration"
+      }
+    },
+    "easing": {
+      "standard": {
+        "value": "cubic-bezier(0.2, 0, 0, 1)",
+        "type": "cubicBezier"
+      },
+      "out": {
+        "value": "cubic-bezier(0, 0, 0.2, 1)",
+        "type": "cubicBezier"
+      }
+    },
+    "reducedMotion": {
+      "duration": {
+        "value": "0ms",
+        "type": "duration",
+        "description": "prefers-reduced-motion: reduce 时全部时长 Token 归零"
+      }
+    }
+  },
+  "focus": {
+    "ring": {
+      "value": "0 0 0 2px {bg}, 0 0 0 4px {accent}",
+      "type": "boxShadow",
+      "description": ":focus-visible 焦点环"
+    }
+  },
+  "interaction": {
+    "states": [
+      "default",
+      "hover",
+      "focus",
+      "active",
+      "disabled",
+      "loading",
+      "error",
+      "success"
+    ],
+    "touchTargetMin": {
+      "value": "44px",
+      "type": "dimension"
+    },
+    "targetGapMin": {
+      "value": "8px",
+      "type": "dimension"
+    }
+  },
+  "layout": {
+    "containerMax": {
+      "mobile": {
+        "value": "480px",
+        "type": "dimension"
+      },
+      "tablet": {
+        "value": "820px",
+        "type": "dimension"
+      },
+      "desktop": {
+        "value": "1200px",
+        "type": "dimension"
+      }
+    },
+    "headerHeight": {
+      "value": "52px",
+      "type": "dimension"
+    },
+    "subnavHeight": {
+      "value": "44px",
+      "type": "dimension"
+    },
+    "tabbarHeight": {
+      "value": "48px",
+      "type": "dimension",
+      "description": "HP-09 底部导航承载岛高度（含内边距与 1px 描边）：56px→48px 收的是留白，三枚 Tab 的 44px 触区不变"
+    },
+    "safeAreaBottom": {
+      "value": "env(safe-area-inset-bottom, 0px)",
+      "type": "dimension"
+    },
+    "posterRatio": {
+      "value": "3 / 4",
+      "type": "ratio"
+    },
+    "posterBannerRatio": {
+      "value": "16 / 9",
+      "type": "ratio"
+    },
+    "capsuleHeight": {
+      "value": "28px",
+      "type": "dimension",
+      "description": "二级分类胶囊【视觉】高度：轻量克制，与一级频道拉开层级"
+    },
+    "capsuleHit": {
+      "value": "44px",
+      "type": "dimension",
+      "description": "二级分类胶囊【命中】高度：SPEC §10 可点击目标 ≥44px 的硬下限，由 `.capsule` 按钮盒自身承担（外层 padding 不扩大命中区，观感 28px 由内层 `.capsule-pill` 承担）"
+    },
+    "tabbarContentMax": {
+      "value": "360px",
+      "type": "dimension",
+      "description": "HP-09 底部导航承载区最大宽度：自本批起同时约束**背景 + 描边 + 圆角 + 内容**（旧口径只收内容、底色仍横贯全屏，真机因此量到一条厚底栏）"
+    },
+    "tabbarInsetX": {
+      "value": "12px",
+      "type": "dimension",
+      "description": "HP-09 底栏承载岛与视口左右边的留白（试验值，须在 360/393/873 真实视口样稿里校准后才定稿）"
+    },
+    "posterGapTight": {
+      "value": "4px",
+      "type": "dimension",
+      "description": "HP-10 密集档（compact-3 / bookshelf-4）横纵间距唯一真相，断点只加列数不换回 --space-2/4；6px→4px 为试验值"
+    },
+    "posterGapWide": {
+      "value": "12px",
+      "type": "dimension",
+      "description": "HP-10 可读优先档（comfort-2 / list-1）横纵间距；comfort-2 由 16px（平板 20px）收到此值"
+    },
+    "posterPadCard": {
+      "value": "2px",
+      "type": "dimension",
+      "description": "HP-10 密集档卡片内边距（旧 --space-1=4px）。描边与底版已在密集模式一并撤掉，三条账分开核：描边 0、底版 0、内边距 2px"
+    },
+    "posterSynopsisRows": {
+      "value": "3",
+      "type": "dimension",
+      "description": "HP-11 图文列表流右侧的摘要行数（旧写死 2 行，短摘要下面留大片空白）"
+    },
+    "playerHit": {
+      "value": "44px",
+      "type": "dimension",
+      "description": "HP-08 全屏控制层按钮的**命中区**下限（与 interaction.touchTargetMin 同源）：视觉收紧凑不得顺手压缩触区"
+    },
+    "playerGlyph": {
+      "value": "24px",
+      "type": "dimension",
+      "description": "HP-08 全屏控制层可见图标尺寸（Lucide 锁定 16/20/24 档之一），与命中区 44px 分账"
+    },
+    "playerChromeHeight": {
+      "value": "48px",
+      "type": "dimension",
+      "description": "HP-08 全屏控制层可视带高（另有 safe-area-inset-top 叠加）。非全屏由 player-host.css 归零，因为画面里没有这条带子"
+    },
+    "badgePadY": {
+      "value": "2px",
+      "type": "dimension",
+      "description": "海报角标垂直内边距（与既有 .poster-ep-badge 同款）"
+    }
+  },
+  "posterGridModes": {
+    "compact3": {
+      "id": "compact-3",
+      "label": "中图紧凑 (3列)",
+      "aspectRatio": "3/4",
+      "columns": {
+        "mobile": 3,
+        "tablet": 4,
+        "desktop": 6
+      },
+      "gap": {
+        "mobile": "4px",
+        "tablet": "4px",
+        "desktop": "4px"
+      },
+      "gapToken": "posterGapTight",
+      "isDefault": true
+    },
+    "comfort2": {
+      "id": "comfort-2",
+      "label": "大图舒适 (2列)",
+      "aspectRatio": "3/4",
+      "columns": {
+        "mobile": 2,
+        "tablet": 3,
+        "desktop": 4
+      },
+      "gap": {
+        "mobile": "12px",
+        "tablet": "12px",
+        "desktop": "12px"
+      },
+      "gapToken": "posterGapWide",
+      "isDefault": false
+    },
+    "bookshelf4": {
+      "id": "bookshelf-4",
+      "label": "微缩书架 (4列)",
+      "aspectRatio": "3/4",
+      "columns": {
+        "mobile": 4,
+        "tablet": 6,
+        "desktop": 8
+      },
+      "gap": {
+        "mobile": "4px",
+        "tablet": "4px",
+        "desktop": "4px"
+      },
+      "gapToken": "posterGapTight",
+      "isDefault": false
+    },
+    "list1": {
+      "id": "list-1",
+      "label": "图文列表 (单列)",
+      "aspectRatio": "3/4",
+      "columns": {
+        "mobile": 1,
+        "tablet": 2,
+        "desktop": 3
+      },
+      "gap": {
+        "mobile": "12px",
+        "tablet": "12px",
+        "desktop": "12px"
+      },
+      "gapToken": "posterGapWide",
+      "isDefault": false
+    }
+  }
+}

@@ -1,0 +1,186 @@
+/**
+ * 大视界 shell 样式：频道栏 / 二级吸顶胶囊 / 续播卡 / 四模海报卡 / 五态视图（SPEC §7、§10）。
+ *
+ * 红线：
+ * - 零裸 Hex 色值，一切取自 design-tokens.css（P0-3）；
+ * - 零 `grid-template-columns`：四模列数与 768/1024 断点倍增归 `.grid-posters-*` 所有，本文件只管卡片内部（AC-04）；
+ * - 触控目标 ≥44px（`.touch-target` + `--header-height` / `--subnav-height`）、相邻间距 ≥8px（`--space-2`）；
+ * - 焦点环由 app.css 的 `:focus-visible` 统一提供，本文件不重复定义。
+ *
+ * 版式约定：一条规则一行，§10 的单文件 300 行红线靠它守住，拆分样式只会把真相源变成两处。
+ */
+
+/* —— 视图骨架 —— */
+.home-view { display: flex; flex-direction: column; gap: var(--space-2); padding-bottom: var(--space-8); }
+/* 图标一律 inline-flex 承载，避免 SVG 基线在按钮里抬出半行空隙。 */
+.icon-host { display: inline-flex; align-items: center; justify-content: center; }
+/* 频道栏 + 二级胶囊合成一个吸顶块，贴在 #app-header 之下（SPEC §7 两层导航）。 */
+.home-sticky { position: sticky; top: 0; z-index: 20; background: var(--surface); border-bottom: 1px solid var(--border); }
+.home-channel-host { background: var(--surface); }
+
+/* —— 第一层：云端动态频道栏（纯文字流体导航） —— */
+.channel-bar-list { display: flex; align-items: center; gap: var(--space-4); padding: 0 var(--space-4); overflow-x: auto; scrollbar-width: none; -webkit-overflow-scrolling: touch; }
+.channel-bar-list::-webkit-scrollbar { display: none; }
+/* 一级频道是主导航，字号上梯级到 --text-md（17px）以确立支配力；激活项加粗 + 琥珀短横。 */
+.channel-tab { position: relative; display: inline-flex; align-items: center; flex: 0 0 auto; height: 40px; padding: 0 var(--space-1); border: 0; background: transparent; color: var(--muted); font-size: var(--text-md); font-weight: 500; white-space: nowrap; cursor: pointer; transition: color var(--duration-fast) var(--ease-standard); }
+.channel-tab.is-active { color: var(--fg); font-weight: 700; }
+/* 选中态下划线：精致短横线居中指示 */
+.channel-tab.is-active::after { content: ''; position: absolute; bottom: 0; left: 50%; transform: translateX(-50%); width: 18px; height: 3px; border-radius: var(--radius-xs); background: var(--accent); }
+
+/* —— 第二层：吸顶联动横滑次级胶囊（UIUX §5.2）——
+ * 【视觉 28px / 命中 44px 双口径 · 不可顺手压缩】
+ * SPEC §10 明令可点击目标 ≥44px，而胶囊本体就是那颗 `<button>`：命中区由按钮盒承担
+ * （`min-height: var(--capsule-hit)`），观感高度由**内层 `.capsule-pill`** 承担（28px）。
+ * 注意：**外层 wrap 的垂直 padding 不会扩大按钮的命中区**，只会把整行撑高；
+ * 早期草案"外层补 padding 凑 44px"是不成立的，故改为内层 pill 方案——两层都真测得出。
+ */
+.capsule-rail-wrap { border-top: 1px solid var(--border-subtle); }
+.capsule-rail { display: flex; align-items: center; gap: var(--space-2); padding: 0 var(--space-3); overflow-x: auto; scrollbar-width: none; -webkit-overflow-scrolling: touch; }
+.capsule-rail::-webkit-scrollbar { display: none; }
+.capsule { flex: 0 0 auto; display: inline-flex; align-items: center; min-height: var(--capsule-hit); padding: 0; border: 0; background: none; color: var(--muted); font-size: var(--text-xs); white-space: nowrap; cursor: pointer; transition: color var(--duration-fast) var(--ease-standard); }
+.capsule-pill { display: inline-flex; align-items: center; height: var(--capsule-height); padding: 0 var(--space-3); border: 1px solid var(--border-subtle); border-radius: var(--radius-pill); transition: all var(--duration-fast) var(--ease-standard); }
+.capsule.is-active { color: var(--accent-on); font-weight: 600; }
+.capsule.is-active .capsule-pill { background: var(--accent); border-color: var(--accent); }
+
+/* —— 首页核心搜索条（点击打开全屏搜索 Overlay；A-2 下隐上现） ——
+ * `position: sticky` 落位在吸顶子导航下沿（`--home-subnav-height`）：只有本身被钉住，"下滑收起 / 上滑复现"
+ * 才是真发生的事，而不是把一个已在视口外的普通流内元素再平移一次（虚假动效）。
+ * 收起用 transform + opacity 并交给 --duration-normal/--ease-standard（A-2 明令不引入新动效 token）；
+ * 层级低于 .home-sticky(z-index 20)，因此它是"滑到子导航背后"消失的，不留空洞。 */
+.home-search-bar { position: sticky; top: var(--home-subnav-height); z-index: 19; margin: 6px 12px 4px; height: 48px; border-radius: var(--radius-lg); background: var(--surface); border: 1px solid var(--border-subtle); display: flex; align-items: center; padding: 0 var(--space-4); cursor: pointer; box-shadow: var(--elev-card); transition: transform var(--duration-normal) var(--ease-standard), opacity var(--duration-normal) var(--ease-standard), border-color var(--duration-fast) var(--ease-standard); }
+.home-search-bar:hover { border-color: var(--accent); }
+.home-search-bar--hidden { transform: translateY(-100%); opacity: 0; pointer-events: none; }
+.home-search-lead { display: flex; align-items: center; gap: 10px; color: var(--muted); font-size: var(--text-sm); width: 100%; }
+.home-search-lead svg { color: var(--accent); flex: none; }
+
+/* —— 四模排版切换器（常驻外壳顶栏右侧工具槽，SPEC §1.7.3）——
+ * 原 `.home-section-header / -lead / -title / -mode-tag` 已物理拔除：频道名与一级频道 100% 重复，
+ * 且为容纳排版图标单占一行约 40px，把海报流整体下压。切换器上提顶栏后那一行不再存在。
+ */
+.home-mode-switch { display: inline-flex; align-items: center; background: var(--surface); border: 1px solid var(--border-subtle); border-radius: var(--radius-md); padding: calc(var(--space-1) / 2); gap: calc(var(--space-1) / 2); flex: 0 0 auto; }
+.mode-btn { display: inline-flex; align-items: center; justify-content: center; width: 30px; height: 30px; padding: 0; border: 0; border-radius: var(--radius-sm); background: transparent; color: var(--muted); cursor: pointer; transition: all var(--duration-fast) var(--ease-standard); }
+.mode-btn[aria-pressed='true'] { color: var(--accent-on); background: var(--accent); }
+.mode-btn-label { display: none !important; }
+
+/* —— 首屏续播卡在首页彻底隐藏（权责完整归拢至追剧页） —— */
+.home-continue-host { display: none !important; }
+.continue-card { display: flex; align-items: center; gap: var(--space-3); width: 100%; min-height: var(--space-16); margin-top: var(--space-2); padding: var(--space-3); border: 1px solid var(--border); border-left: 3px solid var(--accent); border-radius: var(--radius-md); background: var(--surface); box-shadow: var(--elev-card); color: var(--fg); text-align: left; }
+.continue-thumb { position: relative; flex: 0 0 auto; display: flex; align-items: center; justify-content: center; width: var(--space-16); height: 64px; overflow: hidden; border-radius: var(--radius-sm); background: var(--surface-subtle); color: var(--accent); }
+.continue-cover { width: 100%; height: 100%; object-fit: cover; }
+.continue-info { flex: 1 1 auto; display: flex; flex-direction: column; gap: var(--space-1); min-width: 0; }
+.continue-badge { font-size: var(--text-2xs); font-weight: 700; letter-spacing: var(--tracking-caps); color: var(--accent); }
+.continue-title { font-size: var(--text-base); font-weight: 700; color: var(--fg); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+/* 断点秒数用等宽数字，`m:ss` 跳变时卡片不抖。 */
+.continue-meta { font-size: var(--text-xs); color: var(--fg-2); font-variant-numeric: tabular-nums; }
+.continue-progress { display: block; height: var(--space-1); overflow: hidden; border-radius: var(--radius-pill); background: var(--surface-subtle); }
+.continue-progress-fill { display: block; height: 100%; border-radius: var(--radius-pill); background: var(--accent); transition: width var(--duration-normal) var(--ease-standard); }
+.continue-cta { flex: 0 0 auto; display: inline-flex; align-items: center; gap: var(--space-1); padding: var(--space-2) var(--space-3); border-radius: var(--radius-sm); background: var(--accent); color: var(--accent-on); font-size: var(--text-xs); font-weight: 700; }
+
+/* —— 海报网格：列数来自 design-tokens.css 的 `.grid-posters-*`，本文件不重声明 —— */
+.home-grid-host { padding-top: var(--space-2); }
+.home-poster-grid { transition: gap var(--duration-normal) var(--ease-standard); }
+.poster-card { position: relative; display: flex; min-width: 0; overflow: hidden; border: 1px solid var(--border-subtle); border-radius: var(--radius-md); background: var(--surface); }
+/* 整卡是一颗按钮：`aria-label` 给全名，标题/题材/简介都是它的可见文字。 */
+.poster-open { display: flex; flex: 1 1 auto; flex-direction: column; gap: var(--space-1); min-width: 0; padding: var(--space-2); border: 0; background: none; color: inherit; text-align: left; }
+.poster-media { position: relative; display: flex; align-items: center; justify-content: center; width: 100%; aspect-ratio: var(--poster-ratio); overflow: hidden; border-radius: var(--radius-xs); background: var(--surface-subtle); color: var(--muted); }
+.poster-cover { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+/* 封面到位就不绘制占位；缺图或加载失败才亮出 Token 占位，并用虚线边框把异常表达给色觉障碍用户。 */
+.poster-media:not(.is-fallback) .poster-fallback { display: none; }
+.poster-media.is-fallback { border: 1px dashed var(--border); }
+.poster-ep-badge { position: absolute; right: var(--space-1); bottom: var(--space-1); padding: 2px var(--space-2); border-radius: var(--radius-xs); background: var(--surface-overlay); color: var(--fg); font-size: var(--text-2xs); font-variant-numeric: tabular-nums; }
+/* —— 海报左上角微光角标（§1.8.5 / AC-29）——
+ * 与右下角 `.poster-ep-badge` 成黄金对角呼应，故本块只新增、绝不移动那条既有规则。
+ * 高度**不硬编码 18px**：由 `--badge-pad-y`（上下各 2px）+ `--leading-tight` × `--text-2xs` 自然撑出。
+ * 前景必须是 theme-invariant 的 `--badge-*`（深浅双模同值）+ 恒定深底 `--badge-bg`：沿用主题相关的
+ * `--fg` / `--accent` 时，浅色模式会变成「近黑字压深底」或「深琥珀对深底 ≈3.7:1」，双双击穿 4.5:1。 */
+.poster-corner-badge { position: absolute; top: var(--space-1); left: var(--space-1); z-index: 1; display: inline-flex; align-items: center; padding: var(--badge-pad-y) var(--space-2); border-radius: var(--radius-xs); background: var(--badge-bg); color: var(--badge-recommend); font-size: var(--text-2xs); font-weight: 500; line-height: var(--leading-tight); letter-spacing: var(--tracking-caps); white-space: nowrap; }
+.poster-corner-badge--ai { color: var(--badge-ai); }
+.poster-corner-badge--hot { color: var(--badge-hot); }
+.poster-corner-badge--recommend { color: var(--badge-recommend); }
+.poster-body { display: flex; flex: 1 1 auto; flex-direction: column; gap: 2px; min-width: 0; }
+.poster-title { font-size: var(--text-sm); font-weight: 600; color: var(--fg); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+/* —— 卡片信息块（HP-11 / HP-12）：主分类 + 副标签同行，元信息另起一行，摘要只给得出真数据时出现 ——
+ * 每一行都是"有依据才产生节点"，所以这里的默认状态是**塌缩**而不是占位：`.poster-facts` /
+ * `.poster-synopsis` 基类一律 display: none，由排版模式逐档放行；没有摘要也没有年份时，
+ * 卡片就只剩标题与分类，信息块自然变矮，不留一块撑高的空白。 */
+.poster-meta { display: flex; align-items: center; flex-wrap: wrap; gap: var(--space-1); min-width: 0; }
+.poster-tag { min-width: 0; font-size: var(--text-2xs); color: var(--meta); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.poster-subtag { min-width: 0; font-size: var(--text-2xs); color: var(--muted); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.poster-facts { display: none; align-items: center; flex-wrap: wrap; gap: var(--space-1); min-width: 0; }
+.poster-fact { font-size: var(--text-2xs); color: var(--meta); white-space: nowrap; font-variant-numeric: tabular-nums; }
+/* 简介只在图文列表流出现：紧凑与书架模式塞不下，也不该塞。 */
+.poster-synopsis { display: none; font-size: var(--text-xs); color: var(--fg-2); line-height: var(--leading-snug); }
+
+/* —— A-4 + HP-10 密集档的卡片内收：描边、底版与内边距是三条独立的账，一并归零 ——
+ * 旧写法把 `1px 描边 + --surface 底版 + 4px 内边距` 叠在 4px 列间距上，海报四周其实是一圈复合空壳。
+ * 密集档现在撤掉描边与底版（卡片直接坐在页面底色上，海报自身的圆角与底板已经够分隔），
+ * 内边距单独收到 `--poster-pad-card`；标题/图文的可读字号不动，点击单位仍是整卡一颗按钮。 */
+.grid-posters-compact-3 .poster-open { padding: var(--poster-pad-card); gap: var(--poster-pad-card); }
+.grid-posters-compact-3 .poster-body { gap: 1px; }
+.grid-posters-compact-3 .poster-card,
+.grid-posters-bookshelf-4 .poster-card { border: 0; background: transparent; }
+/* 密集档的副标签只许一行截断：三列卡宽约 110px，允许 wrap 就是让信息块自己长到两三行，
+   刚收回来的密度会原额退还给行高。窄屏下溢出部分由 `.poster-subtag` 的省略号收口。 */
+.grid-posters-compact-3 .poster-meta { flex-wrap: nowrap; }
+
+/* 模式三·书架：书脊式微缩，只留海报与一行微字（元信息行整块塌掉，不是隐藏后留白）。 */
+.grid-posters-bookshelf-4 .poster-title { font-size: var(--text-2xs); }
+.grid-posters-bookshelf-4 .poster-ep-badge,
+.grid-posters-bookshelf-4 .poster-meta { display: none; }
+
+/* 模式二·大图舒适：主分类 + 副标签 + 有依据的年份/地区/语言，摘要仍不进（一屏 2×3 的观感优先）。 */
+.grid-posters-comfort-2 .poster-facts { display: flex; }
+
+/* 模式四·图文列表流：左海报定宽、右图文弹性，摘要按 `--poster-synopsis-rows` 用满右侧行数是 HP-11 的正解
+   （旧写法写死 2 行，真目录里最长 30 字的短摘要下面是一片空白）。 */
+.grid-posters-list-1 .poster-open { flex-direction: row; align-items: flex-start; gap: var(--space-3); }
+.grid-posters-list-1 .poster-media { flex: 0 0 auto; width: 88px; }
+.grid-posters-list-1 .poster-title { font-size: var(--text-base); }
+.grid-posters-list-1 .poster-facts { display: flex; }
+.grid-posters-list-1 .poster-synopsis { display: -webkit-box; -webkit-line-clamp: var(--poster-synopsis-rows); line-clamp: var(--poster-synopsis-rows); -webkit-box-orient: vertical; overflow: hidden; }
+
+/* —— 骨架屏与 A-4 无感加载（旧【加载更多】按钮已物理拔除，翻页由哨兵触发） —— */
+.poster-card--skeleton { pointer-events: none; }
+.poster-card--skeleton .poster-media,
+.poster-line { background: var(--surface-subtle); border-radius: var(--radius-xs); }
+.poster-line { height: var(--space-3); }
+.poster-line--short { width: 50%; }
+/* 哨兵必须是"有高度的真实节点"才能被 IntersectionObserver 命中：1px 足够，且永不参与布局视觉。 */
+.home-more-host { display: flex; flex-direction: column; align-items: center; gap: var(--space-1); padding: var(--space-2) var(--space-3); }
+.home-sentinel { width: 100%; height: 1px; border: 0; background: transparent; }
+.home-more-status { display: none; align-items: center; gap: var(--space-2); font-size: var(--text-xs); color: var(--muted); font-variant-numeric: tabular-nums; }
+.home-more-status[data-active='1'] { display: inline-flex; }
+.home-more-status::before { content: ''; width: 12px; height: 12px; border: 2px solid var(--border-strong); border-top-color: var(--accent); border-radius: var(--radius-pill); animation: home-sentinel-spin var(--duration-slow) linear infinite; }
+@keyframes home-sentinel-spin { to { transform: rotate(360deg); } }
+
+/* —— A-3 全屏搜索 Overlay：盖住顶栏与底栏的固定层（搜索不是 Tab，故不进 tabbar） ——
+ * 层内只有一块可滚主体（.app-overlay-body 承载搜索视图），榜单/历史/结果都在其中纵向铺开。 */
+.app-overlay { position: fixed; inset: 0; z-index: 50; display: flex; flex-direction: column; background: var(--bg); padding-top: env(safe-area-inset-top, 0px); padding-bottom: env(safe-area-inset-bottom, 0px); }
+.app-overlay-bar { display: flex; align-items: center; gap: var(--space-2); min-height: var(--header-height); padding: 0 var(--space-3); border-bottom: 1px solid var(--border); background: var(--surface); }
+.app-overlay-body { flex: 1 1 auto; min-height: 0; overflow-y: auto; overscroll-behavior-y: contain; scrollbar-width: none; }
+.app-overlay-body::-webkit-scrollbar { display: none; }
+
+/* —— A-3 榜单专区：三 Tab 本地切换 + 名次行（零网络请求，读的是本机公开快照） —— */
+.rank-tabs { display: flex; align-items: center; gap: var(--space-2); flex-wrap: wrap; }
+.rank-tab { display: inline-flex; align-items: center; justify-content: center; min-height: 44px; padding: 0 var(--space-3); border: 1px solid var(--border-subtle); border-radius: var(--radius-pill); background: var(--surface-warm); color: var(--muted); font-size: var(--text-xs); font-weight: 600; cursor: pointer; transition: all var(--duration-fast) var(--ease-standard); }
+.rank-tab[aria-selected='true'] { background: var(--accent); border-color: var(--accent); color: var(--accent-on); }
+.rank-list { display: flex; flex-direction: column; gap: var(--space-1); }
+/* 名次行只用 flex：列数的真相源归 design-tokens.css，home.css 不声明 grid-template-columns（AC-04）。 */
+.rank-row { display: flex; align-items: center; gap: var(--space-3); width: 100%; min-height: 44px; padding: var(--space-1) var(--space-2); border: 0; border-radius: var(--radius-sm); background: var(--surface-warm); color: var(--fg); text-align: left; cursor: pointer; transition: background var(--duration-fast) var(--ease-standard); }
+.rank-row:hover { background: var(--surface-raised); }
+.rank-index { flex: 0 0 auto; min-width: var(--space-4); text-align: right; font-size: var(--text-sm); font-weight: 800; color: var(--muted); font-variant-numeric: tabular-nums; }
+/* 前 3 名琥珀金高亮：颜色只走 --accent，深浅双模同值可用（P0-3）。 */
+.rank-row--top .rank-index { color: var(--accent); }
+.rank-title { flex: 1 1 auto; min-width: 0; font-size: var(--text-sm); font-weight: 600; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.rank-meta { flex: 0 0 auto; font-size: var(--text-2xs); color: var(--meta); white-space: nowrap; font-variant-numeric: tabular-nums; }
+.rank-heat { flex: 0 0 auto; padding: 0 var(--space-2); border-radius: var(--radius-pill); background: var(--accent-subtle); color: var(--accent); font-size: var(--text-2xs); font-weight: 700; font-variant-numeric: tabular-nums; }
+
+/* —— 五态视图（SPEC §7：loading / empty / error / offline / disabled）—— */
+.state-view { display: flex; flex-direction: column; align-items: center; gap: var(--space-2); margin: var(--space-2) var(--space-3); padding: var(--space-8) var(--space-4); border: 1px dashed var(--border); border-radius: var(--radius-md); background: var(--surface); text-align: center; }
+.state-view-title { margin: 0; font-size: var(--text-md); font-weight: 700; color: var(--fg); }
+.state-view-detail { margin: 0; max-width: var(--container-max-mobile); font-size: var(--text-sm); color: var(--muted); line-height: var(--leading-normal); }
+.state-view-bar { width: 100%; max-width: var(--container-max-mobile); height: var(--space-3); border-radius: var(--radius-xs); background: var(--surface-subtle); }
+.state-view-action { margin-top: var(--space-2); padding: 0 var(--space-4); border: 1px solid var(--accent); border-radius: var(--radius-pill); background: var(--accent-subtle); color: var(--accent); font-size: var(--text-sm); font-weight: 600; }
+.state-view--error .state-view-glyph,
+.state-view--offline .state-view-glyph { color: var(--warn); }
+.state-view--disabled .state-view-glyph { color: var(--muted); }

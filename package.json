@@ -1,0 +1,42 @@
+{
+  "name": "prism-play-core",
+  "version": "1.0.0",
+  "description": "Prism Play Core — A Modern Media Player Framework & Design System built with Capacitor 7 & TypeScript",
+  "private": false,
+  "type": "module",
+  "license": "Apache-2.0",
+  "author": "Master_流光逸影 <shadows.lover@gmail.com>",
+  "homepage": "https://github.com/AIOS-Lab/prism-play-core",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/AIOS-Lab/prism-play-core.git"
+  },
+  "keywords": [
+    "media-player",
+    "video-player",
+    "artplayer",
+    "exoplayer",
+    "capacitor",
+    "typescript",
+    "hls",
+    "design-system",
+    "streaming"
+  ],
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc && vite build",
+    "preview": "vite preview"
+  },
+  "dependencies": {
+    "@capacitor/core": "^7.0.0",
+    "@capacitor/screen-orientation": "^7.0.0",
+    "@capacitor/status-bar": "^7.0.0",
+    "artplayer": "^5.2.1",
+    "hls.js": "^1.5.17"
+  },
+  "devDependencies": {
+    "lucide-static": "^1.48.0",
+    "typescript": "^5.6.3",
+    "vite": "^6.0.0"
+  }
+}

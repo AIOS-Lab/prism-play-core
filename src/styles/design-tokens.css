@@ -1,0 +1,356 @@
+/**
+ * 《光影Play》(Prism Play) Design Tokens (CSS Variables)
+ * 工业级流媒体沉浸规范 - 日夜双模主题系统
+ *
+ * 唯一样式真相源：本文件。`design-tokens.json` 必须与其保持同源对齐（色值/断点/动效）。
+ *
+ * 架构规范：
+ * - A1-identity: 核心品牌色、背景色、前景色、核心字体
+ * - A1-structure: 网格、字号、间距比例、容器与安全区
+ * - A2: 状态语义色、等宽字体、基础动效
+ * - B-slot: 别名层与三级表面、柔和边框
+ * - C-extension: 流媒体专项扩展（海报比例、播放器 HUD 与音量/亮度指示色）
+ *
+ * 绝对规则校验：
+ * [禁止] 零 emoji 图标依赖（100% 采用统一 2px stroke SVG 方案，锁定尺寸 16/20/24px）
+ * [禁止] 零紫色粉色（Indigo->Pink）渐变，零发光边框毛玻璃 AI 模板套路
+ * [禁止] 零裸 hex 色值泄漏到组件（本文件是 Token 定义源，允许出现色值）
+ * [禁止] 弹性/回弹缓动（bounce/elastic），仅使用标准缓动
+ * 说明：以上为规则文字，本文件不含任何 emoji 字符，可通过 CI 的 emoji 正则扫描。
+ */
+
+/* ==========================================================================
+   1. 深色模式 (Dark Theme) —— 黑曜石夜空 (Obsidian Night, 默认)
+   OLED 深度省电暗黑基座，流媒体沉浸质感，高对比度防眩目
+   ========================================================================== */
+:root,
+:root[data-theme="dark"] {
+  /* [A1-identity] 表面层 Surfaces */
+  --bg: #080A10;                    /* 黑曜石夜空深邃基座 (OLED 深度省电) */
+  --surface: #12151F;               /* 一级卡片、顶部吸顶栏、底部导航背景 */
+  --surface-raised: #1A1F2C;        /* 二级悬浮卡片、浮层抽屉、弹窗菜单背景 */
+  --surface-overlay: rgba(8, 10, 16, 0.82); /* 全屏浮层/播放器控制台半透明底 */
+
+  /* [B-slot] 辅助表面层 */
+  --surface-warm: #181C28;          /* 列表高亮行、选中态胶囊容器底色 */
+  --surface-subtle: #0E1119;        /* 极淡背景槽、进度条轨道底层 */
+
+  /* [A1-identity] 前景文本层 Foregrounds */
+  --fg: #F4F6FB;                    /* 主文本色：高纯度冷白，清晰锐利 */
+  --fg-2: #C5CBD8;                  /* 次级文本：剧集副标题、演员、时长信息 */
+  --muted: #7E8698;                 /* 弱化文本：三级元数据、失效状态、占位符 */
+  --meta: #929AAA;                  /* 四级微注：角标、版本号、版权声明（在 surface 上对比度需实测 ≥4.5:1） */
+
+  /* [A1-identity] 边框层 Borders */
+  --border: #222736;                /* 默认分隔线、卡片轮廓 */
+  --border-subtle: #181D29;         /* 极弱边框、网格内部分隔线 */
+  --border-strong: #343B4E;         /* 聚焦高亮边框、激活胶囊描边 */
+
+  /* [A1-identity] 品牌主色与强调 Accent */
+  --accent: #E5A93C;                /* 琥珀金 (Amber Gold) - 顶级流媒体院线质感，告别滥大街紫蓝 */
+  --accent-hover: #F0B854;          /* 悬停提亮态 */
+  --accent-active: #C88E26;         /* 点击按下态 */
+  --accent-on: #080A10;             /* 琥珀金背景上的前景色 (高对比黑曜石) */
+  --accent-subtle: rgba(229, 169, 60, 0.12); /* 琥珀金极淡水合背景 (标签/微光) */
+
+  /* [A2] 语义状态色 Semantics */
+  --success: #22C55E;               /* 完结、支付成功、核销成功 */
+  --success-subtle: rgba(34, 197, 94, 0.14);
+  --warn: #F59E0B;                  /* 试看倒计时、到期提醒 */
+  --warn-subtle: rgba(245, 158, 11, 0.14);
+  --danger: #EF4444;                /* 错误、下线、私密解除失败 */
+  --danger-subtle: rgba(239, 68, 68, 0.14);
+  --info: #38BDF8;                  /* 4K/HDR 技术角标 */
+  --info-subtle: rgba(56, 189, 248, 0.14);
+
+  /* [C-extension] 流媒体播放器专属 Tokens */
+  --player-bg: #000000;             /* 播放器核心视频底层全黑 (OLED 零发光) */
+  --player-hud-bg: rgba(8, 10, 16, 0.72); /* 弧形 HUD 浮层背景 */
+  --player-hud-border: rgba(255, 255, 255, 0.08); /* HUD 极轻描边 */
+  --player-vol-accent: #38BDF8;     /* 左滑音量指示条：水滴冰蓝 */
+  --player-bri-accent: #FBBF24;     /* 右滑亮度指示条：暖阳金芒 */
+  --player-accent: #E5A93C;         /* 播放器内一律使用深底友好的琥珀金 */
+  --player-track-bg: rgba(255, 255, 255, 0.20); /* 播放器进度条底轨 */
+  --player-buffered: rgba(255, 255, 255, 0.45); /* 缓冲进度条 */
+  --player-played: var(--player-accent); /* 已播进度条 (琥珀金) */
+
+  /* [A1-structure] 阴影与深度 Elevation */
+  --elev-flat: none;
+  --elev-ring: 0 0 0 1px var(--border);
+  --elev-card: 0 4px 16px rgba(0, 0, 0, 0.35);
+  --elev-float: 0 12px 32px rgba(0, 0, 0, 0.55);
+  --elev-hud: 0 8px 24px rgba(0, 0, 0, 0.65);
+}
+
+/* ==========================================================================
+   2. 浅色模式 (Light Theme) —— 象牙纯白 (Ivory White)
+   户外强光护眼、高可读性、去反光浅灰白基座
+   ========================================================================== */
+:root[data-theme="light"] {
+  /* [A1-identity] 表面层 Surfaces */
+  --bg: #F5F6FA;                    /* 象牙纯白浅灰底 (户外护眼防眩目) */
+  --surface: #FFFFFF;               /* 纯白卡片、吸顶导航与底部栏 */
+  --surface-raised: #FFFFFF;        /* 浮层、弹窗卡片背景 */
+  --surface-overlay: rgba(245, 246, 250, 0.88); /* 浅色半透明吸顶遮罩 */
+
+  /* [B-slot] 辅助表面层 */
+  --surface-warm: #EBEDF4;          /* 列表选中底色、浅灰输入槽 */
+  --surface-subtle: #E2E5EE;        /* 极淡线槽、进度条浅底 */
+
+  /* [A1-identity] 前景文本层 Foregrounds */
+  --fg: #131720;                    /* 主文本色：深墨晶黑，强对比 */
+  --fg-2: #3E4656;                  /* 次级文本：深灰蓝 */
+  --muted: #6C7486;                 /* 弱化说明与副文本 */
+  --meta: #626B7B;                  /* 辅助角标与占位文字（在 surface 上对比度需实测 ≥4.5:1，正文勿用） */
+
+  /* [A1-identity] 边框层 Borders */
+  --border: #DFE2EA;                /* 标准分割边框 */
+  --border-subtle: #EBEEF5;         /* 柔和内行分割线 */
+  --border-strong: #BAC0CE;         /* 强调与激活状态描边 */
+
+  /* [A1-identity] 品牌主色与强调 Accent */
+  --accent: #B87B14;                /* 浅色模式加深沉淀之琥珀金，保障 4.5:1 对比度 */
+  --accent-hover: #9E670E;          /* 悬停加深态 */
+  --accent-active: #7E5107;         /* 点击深沉态 */
+  --accent-on: #131720;             /* 浅色模式强调色背景上的前景（深色字，保证 ≥4.5:1；禁止用白字） */
+  --accent-subtle: rgba(184, 123, 20, 0.10); /* 浅色微光背景 */
+
+  /* [A2] 语义状态色 Semantics */
+  --success: #15803D;               /* 护眼高对比绿 */
+  --success-subtle: rgba(21, 128, 61, 0.12);
+  --warn: #B45309;                  /* 护眼琥珀橙 */
+  --warn-subtle: rgba(180, 83, 9, 0.12);
+  --danger: #B91C1C;                /* 警告深绯红 */
+  --danger-subtle: rgba(185, 28, 28, 0.12);
+  --info: #0284C7;                  /* 科技天蓝 */
+  --info-subtle: rgba(2, 132, 199, 0.12);
+
+  /* [C-extension] 流媒体播放器专属 Tokens (浅色宿主中播放器内部仍维持全黑沉浸) */
+  --player-bg: #000000;
+  --player-hud-bg: rgba(19, 23, 32, 0.85);
+  --player-hud-border: rgba(255, 255, 255, 0.12);
+  --player-vol-accent: #38BDF8;
+  --player-bri-accent: #FBBF24;
+  --player-accent: #E5A93C;         /* 浅色宿主内播放器仍为全黑底，保持深底友好琥珀金 */
+  --player-track-bg: rgba(255, 255, 255, 0.25);
+  --player-buffered: rgba(255, 255, 255, 0.50);
+  --player-played: var(--player-accent);
+
+  /* [A1-structure] 阴影与深度 Elevation */
+  --elev-flat: none;
+  --elev-ring: 0 0 0 1px var(--border);
+  --elev-card: 0 2px 8px rgba(19, 23, 32, 0.05), 0 8px 24px rgba(19, 23, 32, 0.04);
+  --elev-float: 0 8px 30px rgba(19, 23, 32, 0.12);
+  --elev-hud: 0 6px 20px rgba(0, 0, 0, 0.35);
+}
+
+/* ==========================================================================
+   3. 通用结构规范 (Universal Structures & Typographies)
+   ========================================================================== */
+:root {
+  /* [A1-identity] 字体栈与层级 */
+  --font-display: -apple-system, BlinkMacSystemFont, "SF Pro Display", "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
+  --font-body: -apple-system, BlinkMacSystemFont, "SF Pro Text", "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
+  --font-mono: "SF Mono", "JetBrains Mono", Consolas, "Liberation Mono", Menlo, monospace;
+
+  /* [A1-structure] 字号阶梯 (7 级工程字号) */
+  --text-2xs: 10px;                 /* 极小元标、4K超清小徽标 */
+  --text-xs: 12px;                  /* 辅助标签、集数、时间戳、次级分类 */
+  --text-sm: 13px;                  /* 剧名副标题、简介摘要 */
+  --text-base: 15px;                /* 正文字体、海报卡片标题、列表项 */
+  --text-md: 17px;                  /* 二级栏目标题、弹窗主标、横滑榜单 */
+  --text-lg: 20px;                  /* 频道大标题、设置模块主标题 */
+  --text-xl: 24px;                  /* 续播剧集主标、大剧精选推荐标题 */
+  --text-display: 32px;             /* 核心数值展示、大字报排版 */
+
+  /* [A1-structure] 行高与字距 */
+  --leading-none: 1.0;
+  --leading-tight: 1.25;
+  --leading-snug: 1.375;
+  --leading-normal: 1.5;
+  --tracking-tight: -0.015em;       /* 标题微缩字距 */
+  --tracking-normal: 0em;           /* 正文字距 */
+  --tracking-caps: 0.06em;          /* 全大写英文/技术参数字距 */
+
+  /* [A1-structure] 4px 基准间距系统 */
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-5: 20px;
+  --space-6: 24px;
+  --space-8: 32px;
+  --space-10: 40px;
+  --space-12: 48px;
+  --space-16: 64px;
+
+  /* [A1-structure] 圆角系统 (严禁卡片圆角超过 16px 的 AI 泡泡味) */
+  --radius-xs: 4px;                 /* 极小徽标、集数数字块 */
+  --radius-sm: 6px;                 /* 分类胶囊标签、次级按钮 */
+  --radius-md: 10px;                /* 海报卡片、输入框、续播小卡片 */
+  --radius-lg: 14px;                /* 播放器 HUD 容器、设置面板主卡片、浮层弹窗 */
+  --radius-pill: 9999px;            /* 频道导航切换、音量亮度圆滑胶囊 */
+
+  /* [C-extension] 四模海报排版核心比例与外形约束 */
+  --poster-ratio: 3 / 4;            /* 标准短剧/电影竖版海报黄金比例 3:4 */
+  --poster-banner-ratio: 16 / 9;    /* 横版首屏置顶推流封面比例 16:9 */
+
+  /* [A1-structure] 响应式断点与容器限制 */
+  --container-max-mobile: 480px;    /* 竖屏手机主力视口 */
+  --container-max-tablet: 820px;    /* 折叠屏/平板视口 */
+  --container-max-desktop: 1200px;  /* 桌面视口 */
+  --header-height: 52px;            /* 吸顶频道栏高度 */
+  --subnav-height: 44px;            /* 二级横滑标签栏高度 */
+  /* HP-09 底部导航：56px→48px 是"承载面"的高度（含内边距与 1px 描边），三枚 Tab 的 44px 触区不变。
+     `--tabbar-content-max` 从 HP-09 起同时约束**背景 + 边框 + 内容**（旧口径只收内容，底色仍横贯全屏，
+     真机量到一条厚底栏就是这个差异的现场证据）；`--tabbar-inset-x` 是岛与屏幕左右边的留白。
+     底部安全区只由 `.app-tabbar` 一处消费，`.app-shell` 不再重复加一次（重复留白＝真机那条死黑带）。 */
+  --tabbar-height: 48px;            /* 底部导航承载岛高度 */
+  --tabbar-content-max: 360px;      /* 底部导航承载区最大宽度；背景与内容一同居中收窄 */
+  --tabbar-inset-x: 12px;           /* 试验值：岛与视口左右边的留白，待真实视口校准 */
+  --safe-area-bottom: env(safe-area-inset-bottom, 0px); /* 手机全面屏底部避让 */
+
+  /* [A2] 工业级标准物理动效 Transitions & Easing */
+  --duration-instant: 80ms;         /* 触控按下即时响应 */
+  --duration-fast: 150ms;           /* 标签切换、Hover 状态微变 */
+  --duration-normal: 240ms;         /* 页面抽屉推入、海报排版平滑变换 */
+  --duration-slow: 360ms;           /* 播放器全屏转场、定时器卡片浮现 */
+  --ease-standard: cubic-bezier(0.2, 0, 0, 1);       /* 苹果级平滑缓动 */
+  --ease-out: cubic-bezier(0, 0, 0.2, 1);           /* 浮层移入减速 */
+
+  /* 焦点可见可访问性 Focus Ring */
+  --focus-ring: 0 0 0 2px var(--bg), 0 0 0 4px var(--accent);
+
+  /* ---- 海报微光角标（定义在通用段，故深浅双模天然同值）----
+     角标底板恒为深色（--badge-bg），若前景沿用 --fg / --accent 这类随主题变化的 token，
+     浅色模式下 --fg 会变成近黑、--accent 变成深琥珀，压在深底上不可读（实测 ≈3.7:1 < 4.5:1）。
+     放在通用段而不是两个主题段里各写一遍，就是为了**结构上不可能漂移**。
+     色值全部复用既有 token 的取值，不引入新颜色。 */
+  --badge-ai: #38BDF8;            /* Ai剧类型标识，与播放器水滴冰蓝同源；不表示质量评价 */
+  --badge-hot: #E5A93C;           /* 热门：院线琥珀金（同 --player-accent） */
+  --badge-recommend: #FFFFFF;     /* 推荐：象牙纯白 */
+  --badge-bg: rgba(8, 10, 16, 0.75); /* 角标底板：高斯磨砂深底，恒定深色 */
+  --badge-pad-y: 2px;             /* 角标垂直内边距（与既有 .poster-ep-badge 同款） */
+
+  /* ---- 紧凑海报与首页吸顶层（SPEC-APP-REFACTOR A-2 / A-4，尺寸口径由 HP-10 收敛）----
+     四模的横纵间距只有两个真相：密集排布（compact-3 / bookshelf-4）走 `--poster-gap-tight`，
+     可读优先排布（comfort-2 / list-1）走 `--poster-gap-wide`。断点**只加列数**，不许再把 gap 换回
+     `--space-4/5`；卡片内边距另有 `--poster-pad-card`，与"描边 + 底版"是三条独立的账（HP-10 要求
+     逐条核查叠加浪费，密集模式下前两者已一并撤掉）。以上均为试验值，最终以真实视口样稿定稿。
+     `--home-subnav-height` = 频道行 40px + 胶囊行 --capsule-hit(44px) + 两条 1px 分隔线：
+     折叠搜索栏吸顶时必须正好贴在这块吸顶子导航的下沿，否则"下隐"动画会露馅。 */
+  --poster-gap-tight: 4px;
+  --poster-gap-wide: 12px;
+  --poster-pad-card: 2px;
+  --poster-synopsis-rows: 3;        /* 图文列表流右侧的信息行数（旧写死 2 行，真机留大片空白） */
+  --home-subnav-height: calc(40px + var(--capsule-hit) + 2px);
+
+  /* ---- 二级分类胶囊：视觉高度与命中高度分离 ----
+     视觉收到 28px 是为了降维、不与一级频道争主次；但 SPEC §10 明令可点击目标 ≥44px，
+     故命中高度由外层 wrap 的上下 padding 补足至 44px（8 + 28 + 8）。两者必须同时成立。 */
+  --capsule-height: 28px;
+  --capsule-hit: 44px;
+
+  /* ---- HP-08 全屏限定的紧凑透明控制层 ----
+     `--player-hit` 是控制层按钮的**命中区**下限（与 interaction.touchTargetMin 同源），
+     `--player-glyph` 是画面里真正可见的尺寸（Lucide 锁定 24px）：观感紧凑与触区充足是两条账，
+     收前者不得顺手收后者。`--player-chrome-h` 是控制层的可视带高，非全屏由宿主置 0——
+     那条带子已经从画面里物理摘除，手势面不必再为它让出一条空切。
+     `--player-chrome-scrim` 替掉旧的"横贯实心背景 + 下边框"：只在上沿留一道渐隐，图标仍读得清，
+     画面不再被一条黑带压住。定义在通用段（与 --badge-* 同理），深浅双模结构上不可能漂移。 */
+  --player-hit: 44px;
+  --player-glyph: 24px;
+  --player-chrome-h: 48px;
+  --player-chrome-scrim: linear-gradient(to bottom, rgba(8, 10, 16, 0.68) 0%, rgba(8, 10, 16, 0) 100%);
+}
+
+/* 动效降级处理：偏好减少动画的用户体验保障 */
+@media (prefers-reduced-motion: reduce) {
+  :root {
+    --duration-instant: 0ms;
+    --duration-fast: 0ms;
+    --duration-normal: 0ms;
+    --duration-slow: 0ms;
+  }
+}
+
+/* ==========================================================================
+   4. 四模海报自适应排版网格类 (Poster Mode Grid Classes)
+   ========================================================================== */
+
+/* 模式一：中图紧凑 3 列（默认锁定，单手大拇指极速扫剧；SPEC-APP-REFACTOR A-4 + HP-10）
+ * gap 与左右 padding 同用一个 4px 真相源：外留白比列间距还宽时，"更密"的收益还给两侧空气。 */
+.grid-posters-compact-3 {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: var(--poster-gap-tight);
+  padding: 0 var(--poster-gap-tight);
+}
+
+/* 模式二：大图舒适 2 列 (精美大图赏析，沉浸视觉)：16px→12px，仍是四模里最松的一档。 */
+.grid-posters-comfort-2 {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: var(--poster-gap-wide);
+  padding: 0 var(--space-3);
+}
+
+/* 模式三：微缩书架 4 列 (高密度扫描，海量藏剧迅速定位)：8px→4px，与模式一同源。 */
+.grid-posters-bookshelf-4 {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: var(--poster-gap-tight);
+  padding: 0 var(--poster-gap-tight);
+}
+
+/* 模式四：图文列表流 (单列，左海报 3:4 右图文详情) */
+.grid-posters-list-1 {
+  display: flex;
+  flex-direction: column;
+  gap: var(--poster-gap-wide);
+  padding: 0 var(--space-3);
+}
+
+/* 平板/折叠屏横屏断点响应式倍增 (≥ 768px)
+ * 列数倍增时 gap **不跟着放大**（A-4 必做项 + HP-10）：4/6 列下若仍按 --space-4(16px) 摊开，卡片被切成碎图，
+ * 密度收益全部还给间距。只让外层 padding 随视口走，密集档恒定收在 --poster-gap-tight。 */
+@media (min-width: 768px) {
+  .grid-posters-compact-3 {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: var(--poster-gap-tight);
+    padding: 0 var(--space-2);
+  }
+  .grid-posters-comfort-2 {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: var(--poster-gap-wide);
+  }
+  .grid-posters-bookshelf-4 {
+    grid-template-columns: repeat(6, minmax(0, 1fr));
+    gap: var(--poster-gap-tight);
+  }
+  .grid-posters-list-1 {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: var(--poster-gap-wide);
+  }
+}
+
+/* 大屏/电视/桌面端断点响应式扩展 (≥ 1024px) */
+@media (min-width: 1024px) {
+  .grid-posters-compact-3 {
+    grid-template-columns: repeat(6, minmax(0, 1fr));
+    gap: var(--poster-gap-tight);
+    padding: 0 var(--space-3);
+  }
+  .grid-posters-comfort-2 {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+  .grid-posters-bookshelf-4 {
+    grid-template-columns: repeat(8, minmax(0, 1fr));
+    gap: var(--poster-gap-tight);
+  }
+  .grid-posters-list-1 {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
