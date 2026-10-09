@@ -1,7 +1,7 @@
 # Prism Play Core · 现代跨端流媒体播放框架
 
 > **面向流媒体解析协同与跨端高效播放的应用工程框架与设计系统**  
-> 出品：[AIOS-Lab](https://github.com/AIOS-Lab) ｜ 作者：Master_流光逸影 ｜ 开源协议：[Apache-2.0](./LICENSE)
+> 出品：[AIOS-Lab](https://github.com/AIOS-Lab) ｜ 作者：流光逸影 ｜ 开源协议：[Apache-2.0](./LICENSE)
 
 ---
 
@@ -22,31 +22,31 @@
 
 ## 📱 真实 UI 界面展示 (Showcase)
 
-<div align="center">
-  <img src="./docs/assets/ui-showcase.webp" alt="Prism Play Core 视觉与播放界面" width="100%" style="border-radius: 12px; border: 1px solid #222736; box-shadow: 0 8px 30px rgba(0,0,0,0.5);" />
-  <p><em>▲ 院线级流媒体视觉规范：琥珀金 (#E5A93C) 与 OLED 黑曜石夜空 (#080A10) 双模体系</em></p>
-</div>
+> 以下截图为本仓库 Demo 在真实浏览器中运行的实拍画面（非示意图），公版 Blender 开源短片演示流真实播放中。
 
-<div align="center" style="margin-top: 16px;">
-  <img src="./docs/assets/player-preview.jpg" alt="播放控制台与手势滑轨" width="70%" style="border-radius: 10px; border: 1px solid #222736;" />
-  <p><em>▲ 移动端播放生态台：边到边真全屏沉浸、选集横滑轨与动态手势 HUD</em></p>
+<div align="center">
+  <img src="./docs/assets/ui-showcase-real.png" alt="Prism Play Core 真实运行界面" width="100%" style="border-radius: 12px; border: 1px solid #222736; box-shadow: 0 8px 30px rgba(0,0,0,0.5);" />
+  <p><em>▲ 院线级流媒体视觉规范：琥珀金 (#E5A93C) 与 OLED 黑曜石夜空 (#080A10) 双模体系 · 真实浏览器实拍</em></p>
 </div>
 
 ---
 
 ## 🏛️ 系统架构图 (Q-Flow Architecture)
 
-本项目已完成对所有特定后端云服务与私有业务协议的彻底解耦，公开架构呈现为一个纯粹的**流媒体解析协同与双引擎调度架构**：
+本图由 [Q-Flow](https://github.com/AIOS-Lab) 证据化架构图引擎自动生成：**每个节点与连线均锚定到仓库内的真实源码 `file:line` 锚点**，可在 `docs/qgraphflow/index.html` 离线交互查看并逐条溯源。
 
 <div align="center">
-  <img src="./docs/assets/architecture.svg" alt="Prism Play Core 架构拓扑图" width="100%" style="border-radius: 12px; border: 1px solid #222736;" />
+  <img src="./docs/assets/architecture-qflow.svg" alt="Prism Play Core Q-Flow 架构拓扑图" width="100%" style="border-radius: 12px; border: 1px solid #222736;" />
 </div>
 
-### 架构分层职责：
-- **云端解析与协同层 (Cloud Resolution Seam)**：承接上游动态直链解析与探测，结构化分发多季/分集元数据清单，管理线路故障退避；
-- **统一播放门面与状态机 (Unified Facade)**：防假死状态机调度，统一管辖播放生命周期，透明路由至 Web 自适应切片引擎或 Android ExoPlayer 原生硬件硬解；
-- **交互系统与设计系统 (Gestures & Design Tokens)**：左滑亮度、右滑音量、双击快进退的手势 HUD，常驻选集横滑轨，严格遵守 P0 零 Emoji 规范；
-- **物理跨端宿主 (Capacitor 7 Runtime)**：Android 15 边到边沉浸式透明系统栏，屏幕旋转锁定与音频焦点调度。
+### 架构关系与职责：
+- **应用装配层 (`src/main.ts`)**：组装页面骨架，驱动播放器、选集横滑轨、海报流与主题切换的完整生命周期；
+- **PrismPlayer 门面 (`src/player/prism-player.ts`)**：唯一持有 ArtPlayer 与 Hls.js 实例，统一生命周期、切源清理与双内核路由；
+- **Web HLS 内核 / MP4 原生内核**：根据源类型自动路由——m3u8 走 MSE 切片分流，MP4 走浏览器原生硬解；
+- **DEMO_MEDIA 演示媒体源 (`src/demo-data.ts`)**：公版 Blender 短片与公共测试流的静态清单，仅用于验证播放链路；
+- **Design Tokens 主题系统 (`src/styles/design-tokens.css`)**：琥珀金/黑曜石双模 CSS 变量，所有组件零裸 Hex。
+
+> **交互查看**：克隆仓库后打开 `docs/qgraphflow/index.html`，可离线缩放、按模块高亮并逐条跳转源码锚点。
 
 > **注**：本项目界面默认语言为**简体中文**（当前未集成 i18n 国际化多语言切换）。
 

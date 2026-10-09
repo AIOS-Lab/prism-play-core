@@ -1,0 +1,640 @@
+{
+  "meta": {
+    "title": "Prism Play Core · 播放调度与组件关系架构",
+    "sourceRef": "D:/DEV/prism-play-core 工作区源码",
+    "diagramType": "architecture",
+    "architectureView": "relations",
+    "viewId": "core-playback-relations",
+    "locale": "zh-CN",
+    "notes": [
+      "PrismPlayer 门面是唯一持有 ArtPlayer 与 Hls 实例的组件，负责双内核路由与销毁清理（src/player/prism-player.ts）",
+      "选集横滑轨由装配层 main.ts 内联渲染，点击经 switchSource 切源，不经过频道导航（src/main.ts:118-131）",
+      "演示源为 Blender 基金会公版短片与公共测试流，仅用于验证播放链路，非内容供给（src/demo-data.ts:7-38）",
+      "界面文案默认简体中文，当前未实现 i18n 国际化",
+      "架构不含任何生产云服务、卡密或私有业务组件"
+    ],
+    "scope": "工程 relations 视图：8-12 个可见节点，覆盖 UI 装配层、播放门面、双内核引擎、演示媒体源与组件关系；不含 Android 宿主原生细节"
+  },
+  "nodes": [
+    {
+      "id": "main-shell",
+      "label": "应用装配层（main.ts）",
+      "kind": "service",
+      "module": "app-shell",
+      "subtitle": "组装页面骨架、驱动组件生命周期与主题切换",
+      "source": {
+        "file": "src/main.ts",
+        "lineStart": 100,
+        "lineEnd": 133,
+        "kind": "source",
+        "symbol": "player"
+      },
+      "facts": [
+        "注入导航、播放器、选集与海报流，统一管理事件挂载"
+      ],
+      "position": {
+        "x": 1209,
+        "y": 268
+      },
+      "size": {
+        "width": 360,
+        "height": 132
+      }
+    },
+    {
+      "id": "prism-player",
+      "label": "PrismPlayer 门面（prism-player.ts）",
+      "kind": "business",
+      "module": "playback-core",
+      "subtitle": "唯一持有播放实例，统一生命周期与切源清理",
+      "source": {
+        "file": "src/player/prism-player.ts",
+        "lineStart": 5,
+        "lineEnd": 101,
+        "kind": "source",
+        "symbol": "PrismPlayer"
+      },
+      "facts": [
+        "switchSource 销毁旧 Hls 实例后切换 URL",
+        "destroy 同步清理 hlsInstance 与 ArtPlayer 实例"
+      ],
+      "position": {
+        "x": 445,
+        "y": 714
+      },
+      "size": {
+        "width": 360,
+        "height": 158
+      }
+    },
+    {
+      "id": "web-hls",
+      "label": "Web HLS 内核",
+      "kind": "component",
+      "module": "playback-core",
+      "subtitle": "ArtPlayer 5.4 + hls.js 自适应码率切片播放",
+      "source": {
+        "file": "src/player/prism-player.ts",
+        "lineStart": 24,
+        "lineEnd": 47,
+        "kind": "source",
+        "symbol": "customType"
+      },
+      "facts": [
+        "Hls.isSupported 时走 MSE，否则降级到原生 canPlayType"
+      ],
+      "position": {
+        "x": 57,
+        "y": 950
+      },
+      "size": {
+        "width": 360,
+        "height": 132
+      }
+    },
+    {
+      "id": "mp4-native",
+      "label": "MP4 原生内核",
+      "kind": "component",
+      "module": "playback-core",
+      "subtitle": "直链 MP4 走 video 原生解码，浏览器硬解",
+      "source": {
+        "file": "src/player/prism-player.ts",
+        "lineStart": 16,
+        "lineEnd": 23,
+        "kind": "source",
+        "symbol": "isHls"
+      },
+      "facts": [
+        "根据 URL 与 type 判定路由到 HLS 或 MP4 内核"
+      ],
+      "position": {
+        "x": 457,
+        "y": 950
+      },
+      "size": {
+        "width": 360,
+        "height": 132
+      }
+    },
+    {
+      "id": "demo-media",
+      "label": "DEMO_MEDIA 演示媒体源",
+      "kind": "data",
+      "module": "content-source",
+      "subtitle": "公版开源短片（Blender 基金会）与公共测试流的静态清单",
+      "source": {
+        "file": "src/demo-data.ts",
+        "lineStart": 7,
+        "lineEnd": 38,
+        "kind": "source",
+        "symbol": "DEMO_MEDIA"
+      },
+      "facts": [
+        "单季 3 集：HLS / MP4 / 备用演示流",
+        "仅用于验证播放链路，不提供内容供给"
+      ],
+      "position": {
+        "x": 1209,
+        "y": 32
+      },
+      "size": {
+        "width": 360,
+        "height": 158
+      }
+    },
+    {
+      "id": "channel-bar",
+      "label": "频道导航条（Channel Bar）",
+      "kind": "component",
+      "module": "ui-components",
+      "subtitle": "横向滚动频道胶囊，点击触发 onSelect 回调",
+      "source": {
+        "file": "src/components/channel-bar.ts",
+        "lineStart": 12,
+        "lineEnd": 48,
+        "kind": "source",
+        "symbol": "createChannelBar"
+      },
+      "facts": [
+        "通过 CSS var 消费双模主题色"
+      ],
+      "position": {
+        "x": 57,
+        "y": 478
+      },
+      "size": {
+        "width": 360,
+        "height": 158
+      }
+    },
+    {
+      "id": "poster-grid",
+      "label": "海报瀑布流（Poster Grid）",
+      "kind": "component",
+      "module": "ui-components",
+      "subtitle": "自适应网格渲染媒体卡片，支持角标与点击回调",
+      "source": {
+        "file": "src/components/poster-grid.ts",
+        "lineStart": 15,
+        "lineEnd": 107,
+        "kind": "source",
+        "symbol": "createPosterGrid"
+      },
+      "facts": [
+        "懒加载封面图，hover 悬浮动效"
+      ],
+      "position": {
+        "x": 857,
+        "y": 478
+      },
+      "size": {
+        "width": 360,
+        "height": 158
+      }
+    },
+    {
+      "id": "episode-rail",
+      "label": "选集横滑轨（Episode Rail）",
+      "kind": "component",
+      "module": "ui-components",
+      "subtitle": "渲染 DEMO_MEDIA 的选集按钮，点击触发切源",
+      "source": {
+        "file": "src/main.ts",
+        "lineStart": 33,
+        "lineEnd": 40,
+        "kind": "source",
+        "symbol": "episode-rail"
+      },
+      "facts": [
+        "当前集高亮琥珀金边框，点击更新为 active 态"
+      ],
+      "position": {
+        "x": 457,
+        "y": 478
+      },
+      "size": {
+        "width": 360,
+        "height": 158
+      }
+    },
+    {
+      "id": "theme-tokens",
+      "label": "Design Tokens 主题系统",
+      "kind": "config",
+      "module": "ui-components",
+      "subtitle": "琥珀金 #E5A93C 与黑曜石 #080A10 双模 CSS 变量",
+      "source": {
+        "file": "src/styles/design-tokens.css",
+        "lineStart": 1,
+        "lineEnd": 30,
+        "kind": "config",
+        "symbol": "root"
+      },
+      "facts": [
+        "所有组件通过 var(--accent) 等消费主题色"
+      ],
+      "position": {
+        "x": 1257,
+        "y": 478
+      },
+      "size": {
+        "width": 360,
+        "height": 158
+      }
+    },
+    {
+      "id": "public-hls",
+      "label": "公共 HLS 测试流（test-streams.mux.dev）",
+      "kind": "external",
+      "module": "external-media",
+      "subtitle": "Blender 开源短片公版 HLS 演示流",
+      "facts": [
+        "外部演示源，不承载任何业务数据"
+      ],
+      "position": {
+        "x": 57,
+        "y": 1160
+      },
+      "size": {
+        "width": 360,
+        "height": 158
+      }
+    },
+    {
+      "id": "public-mp4",
+      "label": "公共 MP4 演示流（gtv-videos-bucket）",
+      "kind": "external",
+      "module": "external-media",
+      "subtitle": "Big Buck Bunny 等公版 MP4 直链",
+      "facts": [
+        "外部演示源，验证原生 MP4 内核播放"
+      ],
+      "position": {
+        "x": 457,
+        "y": 1160
+      },
+      "size": {
+        "width": 360,
+        "height": 158
+      }
+    }
+  ],
+  "edges": [
+    {
+      "id": "edge-boot",
+      "source": "main-shell",
+      "target": "prism-player",
+      "kind": "call",
+      "label": "构造播放器",
+      "evidence": "source",
+      "site": {
+        "file": "src/main.ts",
+        "lineStart": 104,
+        "lineEnd": 113,
+        "symbol": "new PrismPlayer"
+      },
+      "route": {
+        "via": [
+          {
+            "x": 1229,
+            "y": 412
+          },
+          {
+            "x": 1229,
+            "y": 734
+          },
+          {
+            "x": 815.8328157299975,
+            "y": 734
+          }
+        ],
+        "labelAt": {
+          "x": 1016.4164078649987,
+          "y": 734
+        }
+      }
+    },
+    {
+      "id": "edge-feed",
+      "source": "demo-media",
+      "target": "main-shell",
+      "kind": "data",
+      "label": "供选集与标题",
+      "evidence": "source",
+      "site": {
+        "file": "src/main.ts",
+        "lineStart": 107,
+        "lineEnd": 110,
+        "symbol": "DEMO_MEDIA"
+      },
+      "route": {
+        "via": [
+          {
+            "x": 1389,
+            "y": 202
+          },
+          {
+            "x": 1389,
+            "y": 256
+          }
+        ],
+        "labelAt": {
+          "x": 1389,
+          "y": 229
+        }
+      }
+    },
+    {
+      "id": "edge-hls",
+      "source": "prism-player",
+      "target": "web-hls",
+      "kind": "call",
+      "label": "m3u8 路由",
+      "evidence": "source",
+      "site": {
+        "file": "src/player/prism-player.ts",
+        "lineStart": 16,
+        "lineEnd": 47,
+        "symbol": "customType"
+      },
+      "route": {
+        "via": [
+          {
+            "x": 434.1671842700025,
+            "y": 852
+          },
+          {
+            "x": 333,
+            "y": 852
+          },
+          {
+            "x": 333,
+            "y": 938
+          }
+        ],
+        "labelAt": {
+          "x": 333,
+          "y": 901
+        }
+      }
+    },
+    {
+      "id": "edge-mp4",
+      "source": "prism-player",
+      "target": "mp4-native",
+      "kind": "call",
+      "label": "MP4 路由",
+      "evidence": "source",
+      "site": {
+        "file": "src/player/prism-player.ts",
+        "lineStart": 16,
+        "lineEnd": 23,
+        "symbol": "isHls"
+      },
+      "route": {
+        "via": [
+          {
+            "x": 613,
+            "y": 884
+          },
+          {
+            "x": 613,
+            "y": 938
+          }
+        ],
+        "labelAt": {
+          "x": 613,
+          "y": 911
+        }
+      }
+    },
+    {
+      "id": "edge-stream-hls",
+      "source": "web-hls",
+      "target": "public-hls",
+      "kind": "request",
+      "label": "HLS 拉流",
+      "evidence": "source",
+      "site": {
+        "file": "src/demo-data.ts",
+        "lineStart": 20,
+        "lineEnd": 20,
+        "symbol": "test-streams"
+      },
+      "route": {
+        "via": [
+          {
+            "x": 225,
+            "y": 1094
+          },
+          {
+            "x": 225,
+            "y": 1148
+          }
+        ],
+        "labelAt": {
+          "x": 225,
+          "y": 1121
+        }
+      }
+    },
+    {
+      "id": "edge-stream-mp4",
+      "source": "mp4-native",
+      "target": "public-mp4",
+      "kind": "request",
+      "label": "MP4 直链",
+      "evidence": "source",
+      "site": {
+        "file": "src/demo-data.ts",
+        "lineStart": 26,
+        "lineEnd": 26,
+        "symbol": "BigBuckBunny"
+      },
+      "route": {
+        "via": [
+          {
+            "x": 649,
+            "y": 1094
+          },
+          {
+            "x": 649,
+            "y": 1148
+          }
+        ],
+        "labelAt": {
+          "x": 649,
+          "y": 1121
+        }
+      }
+    },
+    {
+      "id": "edge-channel",
+      "source": "main-shell",
+      "target": "channel-bar",
+      "kind": "call",
+      "label": "挂载导航",
+      "evidence": "source",
+      "site": {
+        "file": "src/components/channel-bar.ts",
+        "lineStart": 12,
+        "lineEnd": 48,
+        "symbol": "createChannelBar"
+      },
+      "route": {
+        "via": [
+          {
+            "x": 1197,
+            "y": 310
+          },
+          {
+            "x": 397,
+            "y": 310
+          },
+          {
+            "x": 397,
+            "y": 466
+          }
+        ],
+        "labelAt": {
+          "x": 803,
+          "y": 310
+        }
+      }
+    },
+    {
+      "id": "edge-grid",
+      "source": "main-shell",
+      "target": "poster-grid",
+      "kind": "call",
+      "label": "挂载海报",
+      "evidence": "source",
+      "site": {
+        "file": "src/components/poster-grid.ts",
+        "lineStart": 15,
+        "lineEnd": 107,
+        "symbol": "createPosterGrid"
+      },
+      "route": {
+        "via": [
+          {
+            "x": 1197,
+            "y": 380
+          },
+          {
+            "x": 1133,
+            "y": 380
+          },
+          {
+            "x": 1133,
+            "y": 466
+          }
+        ],
+        "labelAt": {
+          "x": 1133,
+          "y": 429
+        }
+      }
+    },
+    {
+      "id": "edge-episodes",
+      "source": "main-shell",
+      "target": "episode-rail",
+      "kind": "call",
+      "label": "渲染选集",
+      "evidence": "source",
+      "site": {
+        "file": "src/main.ts",
+        "lineStart": 33,
+        "lineEnd": 40,
+        "symbol": "episode-rail"
+      },
+      "route": {
+        "via": [
+          {
+            "x": 1197,
+            "y": 334
+          },
+          {
+            "x": 797,
+            "y": 334
+          },
+          {
+            "x": 797,
+            "y": 466
+          }
+        ],
+        "labelAt": {
+          "x": 1003,
+          "y": 334
+        }
+      }
+    },
+    {
+      "id": "edge-switch",
+      "source": "episode-rail",
+      "target": "prism-player",
+      "kind": "call",
+      "label": "点击切源",
+      "evidence": "source",
+      "site": {
+        "file": "src/main.ts",
+        "lineStart": 118,
+        "lineEnd": 131,
+        "symbol": "switchSource"
+      },
+      "route": {
+        "via": [
+          {
+            "x": 625,
+            "y": 648
+          },
+          {
+            "x": 625,
+            "y": 702
+          }
+        ],
+        "labelAt": {
+          "x": 625,
+          "y": 675
+        }
+      }
+    },
+    {
+      "id": "edge-theme",
+      "source": "main-shell",
+      "target": "theme-tokens",
+      "kind": "data",
+      "label": "切日夜主题",
+      "evidence": "source",
+      "site": {
+        "file": "src/main.ts",
+        "lineStart": 137,
+        "lineEnd": 143,
+        "symbol": "data-theme"
+      },
+      "route": {
+        "via": [
+          {
+            "x": 1449,
+            "y": 412
+          },
+          {
+            "x": 1449,
+            "y": 466
+          }
+        ],
+        "labelAt": {
+          "x": 1449,
+          "y": 439
+        }
+      }
+    }
+  ],
+  "layout": {
+    "direction": "down",
+    "version": "templates-v4-clearance-compact-elkjs-0.11.0",
+    "strategy": "layered-2"
+  }
+}
